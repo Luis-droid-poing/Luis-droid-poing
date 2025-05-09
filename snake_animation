@@ -1,0 +1,39 @@
+.github/workflows/snake_animation.yml
+
+name: Generate GitHub Snake Animation
+
+on:
+  # Executa a cada 12 horas
+  schedule:
+    - cron: "0 */12 * * *"
+  # Permite executar manualmente pela aba Actions do seu repositório
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Necessário para a action commitar as imagens geradas
+
+    steps:
+      - name: Generate Snake Animation
+        uses: Platane/snk@v3
+        with:
+          # Seu nome de usuário do GitHub (já configurado para pegar automaticamente)
+          github_user_name: ${{ github.repository_owner }}
+
+          # Lista de arquivos a serem gerados.
+          # Cada linha é um arquivo. Você pode personalizar as opções com "?param=valor"
+          outputs: |
+            dist/github-snake.svg
+            dist/github-snake-dark.svg?palette=github-dark
+            dist/my-blue-black-snake.svg?palette=github-dark&color_snake=#2196F3&color_dots=#161B22,#0D47A1,#1565C0,#1E88E5,#64B5F6
+            # Explicação das cores para "my-blue-black-snake.svg":
+            # palette=github-dark: usa o fundo escuro (preto/cinza escuro) do tema do GitHub.
+            # color_snake=#2196F3: define a cor da cobra como um tom de azul vibrante.
+            # color_dots=#161B22,#0D47A1,#1565C0,#1E88E5,#64B5F6:
+            #   - #161B22: Cor para dias com 0 contribuições (quase preto, igual ao fundo do tema github-dark).
+            #   - #0D47A1: Azul bem escuro para poucas contribuições.
+            #   - #1565C0: Azul escuro.
+            #   - #1E88E5: Azul médio.
+            #   - #64B5F6: Azul claro para muitas contribuições.
